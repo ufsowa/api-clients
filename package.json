@@ -1,0 +1,10 @@
+{
+  "name": "api-clients",
+  "version": "1.0.0",
+  "description": "REST API",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "experss": "^0.0.1-security"
+  }
+}
