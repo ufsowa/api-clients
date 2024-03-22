@@ -34,15 +34,27 @@ app.get('/testimonials/:id', (req, res) => {
 
 app.put('/testimonials', (req, res) => {
     console.log('put item ');
-    db.push({id: shortid(), author: req.body.author, text: req.body.text});
-    res.json(db);
+    const {author, text} = req.body;
+
+    if( author && text) {
+        db.push({id: shortid(), author: author, text: text});
+        res.json(db);            
+    } else {
+        res.status(400).json({message: 'Missing request data...'})
+    }
 });
 
 app.put('/testimonials/:id', (req, res) => {
     console.log('edit item ');
-    const index = db.findIndex(item => item.id.toString() === req.params.id);
-    db[index] = { ...db[index], author: req.body.author, text: req.body.text};
-    res.json(db);
+    const {author, text} = req.body;
+
+    if( author && text) {
+        const index = db.findIndex(item => item.id.toString() === req.params.id);
+        db[index] = { ...db[index], author: author, text: text};
+        res.json(db);
+    } else {
+        res.status(400).json({message: 'Missing request data...'})
+    }
 });
 
 app.delete('/testimonials/:id', (req, res) => {
@@ -50,6 +62,9 @@ app.delete('/testimonials/:id', (req, res) => {
     res.json(db.filter(item => item.id.toString() !== req.params.id));
 });
 
+app.use((req, res) => {
+    res.status(404).json({ message: 'Not found...' });
+})
 
 // ports
 app.listen(8000, () => {
